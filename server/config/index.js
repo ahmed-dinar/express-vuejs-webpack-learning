@@ -1,0 +1,4 @@
+
+module.exports = {
+	jwtSecret: 'bG2BbL7bxL8RezXjanerGNEyPBjYLUhEmyBAA6mV4zC9gxM4zxZvfw2pNpUaZC6SkHawphb4gmDz686jUfpK4FbtjftRGp7EkDrYz4QPMFg8QGNcmwVL4GsvH2zLfvgWhwtgKYhHjYRCdz9Fr2URR9MAJGyXRkcLXX5LPCS37uNtV9adwrdrCSLXnaQYBkFt4PFzFMEq46GdFvApyfxxhMgefCwdNJhAsJsEtgTGZjNP5AfKacgvYC7yEfQMKhgH'
+};
