@@ -9,11 +9,11 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 
   state: {
-  	auth: {
-  	  authenticated: false,
+    auth: {
+      authenticated: false,
       error: '',
-  	  data: {}
-  	}
+      data: {}
+    }
   },
 
   getters: {
@@ -27,13 +27,13 @@ export default new Vuex.Store({
 
   mutations: {
 
-  	[LOGIN] (state, data) {
-  	  state.auth.authenticated = true;
-  	  state.auth.data = data;
+    [LOGIN] (state, data) {
+      state.auth.authenticated = true;
+      state.auth.data = data;
       state.auth.error = '';
-  	},
+    },
 
-  	[LOG_OUT] (state) {
+    [LOG_OUT] (state) {
       state.auth.authenticated = false;
       state.auth.data = {};
       state.auth.error = '';
@@ -46,16 +46,16 @@ export default new Vuex.Store({
     },
 
     [FLASH] (state) {
-  	  state.auth.error = '';
-  	}
+      state.auth.error = '';
+    }
   },
 
   actions: {
 
-  	login({ commit }, creds) {
+    login({ commit }, creds) {
 
-  	  axios.post("/api/login", creds)
-      .then( res => {
+      axios.post('/api/login', creds)
+        .then( res => {
 
           console.log(res.data);
 
@@ -66,14 +66,15 @@ export default new Vuex.Store({
 
           console.log(res.data.data.access_token);
 
-          axios.defaults.headers.common['Authorization'] = 'Bearer ' +  res.data.data.access_token;
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.data.access_token;
           commit(LOGIN, res.data.data);
 
-	    }).catch( err => {
-        console.log('catches:');
-	      console.log(err);
-	    });
-  	}
+        })
+        .catch( err => {
+          console.log('catches:');
+	        console.log(err);
+	      });
+    }
   },
 
   plugins: [ createPersistedState({

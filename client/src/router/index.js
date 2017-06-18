@@ -9,7 +9,7 @@ import Page404 from '@/components/Page404';
 
 Vue.use(Router);
 
- const router = new Router({
+const router = new Router({
 
   mode: 'history',
   routes: [
@@ -42,8 +42,8 @@ Vue.use(Router);
 
 
 router.beforeEach((to, from, next) => {
-    console.log(to);
-    next();
+  console.log(to);
+  next();
 });
 
 

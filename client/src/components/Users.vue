@@ -28,7 +28,7 @@ export default {
 
   created() {
 
-    this.$http
+    axios
       .get('/api/users')
       .then(response => {
         console.log(response.data);

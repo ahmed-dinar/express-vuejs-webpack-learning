@@ -23,20 +23,20 @@
 
 <script>
 	export default {
-		name: 'app',
+	  name: 'app',
 
-		data() {
+	  data() {
 
-			return {
+	    return {
  
-			};
-		},
+	    };
+	  },
 
-		computed: {
-			isLoggedIn(){
-				return this.$store.getters.isLoggedIn;
-			}
-		}
+	  computed: {
+	    isLoggedIn(){
+	      return this.$store.getters.isLoggedIn;
+	    }
+	  }
 	};
 </script>
 

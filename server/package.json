@@ -1,11 +1,13 @@
 {
-  "name": "express-vuejs-webpack-learning server",
+  "name": "express-vuejs-webpack-learning-server",
   "version": "0.0.0",
   "description": "A VueJS Learning project! (server)",
   "author": "ahmed-dinar <madinar.cse@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc *",
+    "lint-fix": "./node_modules/.bin/eslint -c .eslintrc --fix *"
   },
   "dependencies": {
     "body-parser": "~1.17.1",

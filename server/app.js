@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
+//var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cors = require('cors');
 //var csrf = require('csurf');
@@ -25,8 +25,8 @@ app.use(express.static(path.join(__dirname, 'public/static')));
 
 app.use('/api', require('./routes/api'));
 
-app.get('*', function(req, res)  {
-	res.sendFile(__dirname + '/public/index.html');
+app.get('*', function(req, res) {
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 

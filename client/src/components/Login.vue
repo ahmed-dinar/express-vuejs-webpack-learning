@@ -32,8 +32,6 @@
 
 <script>
 
-  import { LOGIN } from '../store/mutation-types';
-
   export default {
 
 
