@@ -22,13 +22,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/static')));
 
-
 app.use('/api', require('./routes/api'));
 
 app.get('*', function(req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
+
+
+app.use(function (err, req, res, next) {
+
+  console.log(err);
+
+  //express-jwt authentication
+  if (err.name === 'UnauthorizedError')
+    return res.status(401).json({ error: 'Unauthorized' });
+
+  res.status(500).json({ error: 'Internal Server Rrror' });
+});
 
 
 

@@ -1,36 +1,38 @@
 
 <template>
-  <div class="col-sm-4 col-sm-offset-4">
+  <div class="login-wrapper">
 
-    <div class="alert alert-danger" v-if="errros">
-      <p>{{ errros }}</p>
-    </div>
+    <b-alert variant="danger" dismissible :show="errros" >
+      {{ errros }}
+    </b-alert>
 
-    <h2>Log In</h2>
+    <b-card  header="Sign In"  class="mb-2">
 
-    <div class="form-group">
-      <input
-      type="text"
-      class="form-control"
-      placeholder="Username"
-      v-model="credentials.username"
-      >
-    </div>
-    <div class="form-group">
-      <input
-      type="password"
-      class="form-control"
-      placeholder="Password"
-      v-model="credentials.password"
-      >
-    </div>
-    <button class="btn btn-primary" @click="submit()">Submit</button>
+      <div class="form-group">
+        <input
+        type="text"
+        class="form-control"
+        placeholder="Username"
+        v-model="credentials.username"
+        >
+      </div>
+      <div class="form-group">
+        <input
+        type="password"
+        class="form-control"
+        placeholder="Password"
+        v-model="credentials.password"
+        >
+      </div>
+      <button class="btn btn-primary" @click="submit()">Submit</button>
 
-
+    </b-card>
   </div>
 </template>
 
 <script>
+
+  import { mapState } from 'vuex';
 
   export default {
 
@@ -54,11 +56,10 @@
 
         let credentials = {
           username: this.credentials.username,
-          password: this.credentials.password
+          password: this.credentials.password,
         };
 
         console.log(credentials);
-
 
         this.$store.dispatch('login', credentials);
 
@@ -67,11 +68,19 @@
 
     computed: {
 
-      errros(){
-        return this.$store.getters.errors;
-      }
+      ...mapState({
+        errros: state => state.auth.errors
+      })
+
     }
 
   };
 </script>
 
+<style>
+  .login-wrapper{
+    width: 350px;
+    margin:  0 auto;
+    margin-top: 100px;
+  }
+</style>

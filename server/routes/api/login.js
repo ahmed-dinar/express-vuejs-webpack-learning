@@ -1,7 +1,7 @@
 
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
-var uniqid = require('uniqid');
+
 var config = require('../../config');
 var fakeData = require('../../config/fake');
 
@@ -25,16 +25,7 @@ module.exports = function(req, res, next) {
 
   var payLoad = _.omit(userData, ['password','phone']);
 
-  var jwtOpt = {
-    algorithm: 'HS256',
-    expiresIn: '24h',
-    issuer: 'https://justoj.com/api/v1/',
-    jwtid: uniqid(),
-    subject: 'Auth',
-    header: {
-      typ: 'JWT'
-    }
-  };
+  var jwtOpt = config.jwtOptions();
 
   console.log(payLoad);
   console.log(jwtOpt);

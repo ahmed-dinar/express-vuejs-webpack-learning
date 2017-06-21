@@ -1,4 +1,21 @@
+var uniqid = require('uniqid');
 
 module.exports = {
-	jwtSecret: 'bG2BbL7bxL8RezXjanerGNEyPBjYLUhEmyBAA6mV4zC9gxM4zxZvfw2pNpUaZC6SkHawphb4gmDz686jUfpK4FbtjftRGp7EkDrYz4QPMFg8QGNcmwVL4GsvH2zLfvgWhwtgKYhHjYRCdz9Fr2URR9MAJGyXRkcLXX5LPCS37uNtV9adwrdrCSLXnaQYBkFt4PFzFMEq46GdFvApyfxxhMgefCwdNJhAsJsEtgTGZjNP5AfKacgvYC7yEfQMKhgH'
+
+  jwtOptions: function(){
+
+    return {
+      algorithm: 'HS256',
+      expiresIn: 60*60,
+      issuer: 'https://somedmain.com/api/',
+      jwtid: uniqid(),
+      subject: 'Auth',
+      header: {
+        typ: 'JWT'
+      }
+    };
+  },
+
+  jwtSecret: 'bG2BbL7bxL8RezXjanerGNEyPBjYLUhEmy'
+
 };

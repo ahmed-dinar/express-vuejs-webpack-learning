@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+
+var authJwt = require('../../middlewares/authJwt');
+var config = require('../../config');
 var fakeData = require('../../config/fake');
 
 
@@ -27,5 +30,7 @@ router.get('/countries',function(req, res, next) {
 
 
 router.post('/login', require('./login') );
+
+router.get('/protected', authJwt(), require('./protected') );
 
 module.exports = router;

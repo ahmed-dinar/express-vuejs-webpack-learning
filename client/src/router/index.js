@@ -1,10 +1,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Hello from '@/components/Hello';
-import Users from '@/components/Users';
+import Members from '@/components/Members';
 import Countries from '@/components/Countries';
 import Login from '@/components/Login';
+import Protected from '@/components/Protected';
 import Page404 from '@/components/Page404';
+import store from '@/store';
+import NProgress from 'nprogress';
 
 
 Vue.use(Router);
@@ -19,9 +22,9 @@ const router = new Router({
       component: Hello
     },
     {
-      path: '/users',
+      path: '/members',
       name: 'User List',
-      component: Users
+      component: Members
     },
     {
       path: '/countries',
@@ -30,8 +33,16 @@ const router = new Router({
     },
     {
       path: '/login',
-      name: 'Login Page',
+      name: 'SingIn',
       component: Login
+    },
+    {
+      path: '/protected',
+      name: 'ProtectedData',
+      component: Protected,
+      meta: {
+        auth: true,
+      }
     },
     {
       path: '*',
@@ -42,10 +53,25 @@ const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
+
+  NProgress.start();
+
   console.log(to);
+
+  if( to.name === 'SingIn' && store.getters.isLoggedIn )
+    router.replace({ path: '/' });
+
+  if( to.matched.some(record => record.meta.auth) && !store.getters.isLoggedIn )
+    router.replace({ path: '/login' });
+
   next();
 });
 
+
+router.afterEach((to,from) => {
+    NProgress.done();
+    NProgress.remove();
+});
 
 
 export default router;
