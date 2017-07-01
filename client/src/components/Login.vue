@@ -2,8 +2,8 @@
 <template>
   <div class="login-wrapper">
 
-    <b-alert variant="danger" dismissible :show="errros" >
-      {{ errros }}
+    <b-alert variant="danger" class="text-center" dismissible :show="!!errors" @dismissed="errors=''" >
+      {{ errors }}
     </b-alert>
 
     <b-card  header="Sign In"  class="mb-2">
@@ -24,7 +24,7 @@
         v-model="credentials.password"
         >
       </div>
-      <button class="btn btn-primary" @click="submit()">Submit</button>
+      <button class="btn btn-success btn-block" @click="submit()">Submit</button>
 
     </b-card>
   </div>
@@ -44,7 +44,9 @@
         credentials: {
           username: '',
           password: ''
-        }
+        },
+
+        errors: ''
 
       };
 
@@ -54,33 +56,23 @@
 
       submit() {
 
+        var vm = this;
+
         let credentials = {
-          username: this.credentials.username,
-          password: this.credentials.password,
+          username: vm.credentials.username,
+          password: vm.credentials.password,
         };
 
         console.log(credentials);
 
-        this.$store.dispatch('login', credentials);
+        vm.$store.dispatch('login', credentials)
+        .catch(err => {
+          vm.errors = err;
+        });
 
       }
-    },
-
-    computed: {
-
-      ...mapState({
-        errros: state => state.auth.errors
-      })
-
     }
 
   };
 </script>
 
-<style>
-  .login-wrapper{
-    width: 350px;
-    margin:  0 auto;
-    margin-top: 100px;
-  }
-</style>

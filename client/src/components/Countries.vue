@@ -1,7 +1,11 @@
 <template>
   <div>
 
-    <b-card no-block header="Country List"  class="mb-2">
+    <b-card no-block  class="mb-2">
+
+      <h4 class="card-title" slot="header">
+        <i class="fa fa-globe"></i> Country List
+      </h4>
 
       <div v-show="loading" class="text-center spinner-wrapper">
         <pulse-loader :loading="loading" color="#398DF0" size="15px"></pulse-loader>
@@ -31,6 +35,18 @@
 
   <div v-if="errors">Errors: <br>{{ errors }}</div>
 
+
+  <!-- Modal Component -->
+  <b-modal ref="detailModal" size="lg" button-size="sm" ok-only :title="detail.name">
+
+    Name: {{ detail.name }} <br>
+    Latitude: {{ detail.latitude }} <br>
+    Longitude: {{ detail.longitude }} <br>
+    Country Code: {{ detail.countryCode }} <br>
+
+  </b-modal>
+
+
 </div>
 </template>
 
@@ -47,6 +63,7 @@
         countries: [],
         errors: null,
         loading: true,
+        detail: {},
         fields:{
           name:{
             label: 'Name',
@@ -107,10 +124,14 @@
       },
 
       details(item) {
-        alert(JSON.stringify(item));
-      }
-    }
 
-  };
+        this.detail = item;
+        this.$refs.detailModal.show();
+        console.log(JSON.stringify(item));
+
+       // alert(JSON.stringify(item));
+     }
+   }
+
+ };
 </script>
-

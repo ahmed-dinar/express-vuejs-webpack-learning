@@ -7,7 +7,6 @@ import Vue from 'vue';
 
 const state = {
 	authenticated: false,
-	errors: '',
 	data: {}
 };
 
@@ -32,17 +31,11 @@ const mutations = {
 	[muts.LOG_OUT] (state) {
 		state.authenticated = false;
 		state.data = {};
-		state.errors = '';
 	},
 
-	[muts.LOGIN_FAILURE] (state, err) {
+	[muts.LOGIN_FAILURE] (state) {
 		state.authenticated = false;
 		state.data = {};
-		state.errors = err;
-	},
-
-	[muts.FLASH] (state) {
-		state.errors = '';
 	}
 };
 
@@ -51,33 +44,38 @@ const actions = {
 
 	login({ commit }, creds) {
 
-   axios.post('/api/login', creds)
-     .then( res => {
+    return new Promise((resolve, reject) => {
 
-      console.log(res.data);
+      axios.post('/api/login', creds)
+      .then( res => {
 
-      if( res.data.status !== 'success' ){
-        commit(muts.LOGIN_FAILURE, res.data.error);
-        return;
-      }
+        console.log(res.data);
+        console.log(res.data.access_token);
 
-      console.log(res.data.data.access_token);
+        commit(muts.LOGIN, res.data);
+        Vue.prototype.$http.defaults.headers.common.Authorization = `Bearer ${res.data.access_token}`;
+        router.replace('/protected');
+        resolve();
+      })
+      .catch( err => {
 
-      commit(muts.LOGIN, res.data.data);
-      Vue.prototype.$http.defaults.headers.common['Authorization'] = `Bearer ${res.data.data.access_token}`;
-      router.replace('/protected');
-    })
-     .catch( err => {
-      console.log(err);
-      commit(muts.LOGIN_FAILURE, err);
+        console.log(err);
+        commit(muts.LOGIN_FAILURE);
+
+        let retErr = has(err.response.data,'error')
+        ? err.response.data.error
+        : `${err.response.status} ${err.response.statusText}`;
+
+        reject(retErr);
+      });
     });
 
- },
+  },
 
- logOut({ commit }) {
-  commit(muts.LOG_OUT);
-  router.replace('/login');
-}
+  logOut({ commit }) {
+    commit(muts.LOG_OUT);
+    router.replace('/login');
+  }
 
 };
 

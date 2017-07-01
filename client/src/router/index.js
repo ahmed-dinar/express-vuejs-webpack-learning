@@ -4,6 +4,7 @@ import Hello from '@/components/Hello';
 import Members from '@/components/Members';
 import Countries from '@/components/Countries';
 import Login from '@/components/Login';
+import SingUp from '@/components/SingUp';
 import Protected from '@/components/Protected';
 import Page404 from '@/components/Page404';
 import store from '@/store';
@@ -37,6 +38,11 @@ const router = new Router({
       component: Login
     },
     {
+      path: '/register',
+      name: 'SingUp',
+      component: SingUp
+    },
+    {
       path: '/protected',
       name: 'ProtectedData',
       component: Protected,
@@ -58,7 +64,7 @@ router.beforeEach((to, from, next) => {
 
   console.log(to);
 
-  if( to.name === 'SingIn' && store.getters.isLoggedIn )
+  if( (to.name === 'SingIn' || to.name === 'SingUp') && store.getters.isLoggedIn )
     router.replace({ path: '/' });
 
   if( to.matched.some(record => record.meta.auth) && !store.getters.isLoggedIn )

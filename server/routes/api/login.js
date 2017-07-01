@@ -21,7 +21,7 @@ module.exports = function(req, res, next) {
   console.log(userData);
 
   if( !userData || userData.password != password )
-    return res.status(200).json({ status: 'failed', error: 'Username or Password is invalid' });
+    return res.status(401).json({ error: 'Username or Password is invalid' });
 
   var payLoad = _.omit(userData, ['password','phone']);
 
@@ -35,7 +35,7 @@ module.exports = function(req, res, next) {
 
     if(err){
       console.log(err);
-      return res.status(500).json({ status: 'failed', error: 'Internal Server Error' });
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
 
     console.log('token');
@@ -43,7 +43,7 @@ module.exports = function(req, res, next) {
 
     payLoad.access_token = token;
 
-    res.status(200).json({ status: 'success', data: payLoad });
+    res.status(200).json(payLoad);
   });
 
 

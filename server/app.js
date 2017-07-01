@@ -4,8 +4,9 @@ var path = require('path');
 var logger = require('morgan');
 var cors = require('cors');
 //var csrf = require('csurf');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var serveStatic = require('serve-static');
+var expressValidator = require('express-validator');
 var helmet = require('helmet');
 
 var app = express();
@@ -19,16 +20,14 @@ app.use(helmet.hidePoweredBy());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public/static')));
+app.use(expressValidator());
+app.use(serveStatic(path.join(__dirname, 'public/static')));
 
 app.use('/api', require('./routes/api'));
 
 app.get('*', function(req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
-
-
 
 app.use(function (err, req, res, next) {
 

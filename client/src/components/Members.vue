@@ -25,9 +25,10 @@
      </b-table>
    </b-card>
 
-   <div v-if="errors">Errors: <br>{{ errors }}</div>
 
- </div>
+  <div v-if="errors">Errors: <br>{{ errors }}</div>
+
+</div>
 </template>
 
 <script>

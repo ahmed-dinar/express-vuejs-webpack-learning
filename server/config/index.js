@@ -1,6 +1,9 @@
 var uniqid = require('uniqid');
+var secret = require('./secret');
 
 module.exports = {
+
+  secrets: secret,
 
   jwtOptions: function(){
 
