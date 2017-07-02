@@ -5,6 +5,7 @@ var merge = require('webpack-merge');
 var baseWebpackConfig = require('./webpack.base.conf');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+var GoogleFontsPlugin = require("google-fonts-webpack-plugin");
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -21,6 +22,14 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.dev.env
     }),
+
+    new GoogleFontsPlugin({
+      fonts: [
+        { family: "Source Sans Pro", variants: [ "400", "600", "700" ] }
+      ],
+      local: false
+    }),
+
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

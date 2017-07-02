@@ -1,50 +1,89 @@
+/**
+ * Author: Ahmed Dinar
+ * @type module
+ */
 
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
+var async = require('async');
 
 var config = require('../../config');
-var fakeData = require('../../config/fake');
+var User = require('../../models/user');
 
 
 module.exports = function(req, res, next) {
 
-  console.log(req.headers);
   console.log(req.body);
-
-  var users = fakeData.users();
 
   var username = req.body.username;
   var password = req.body.password;
 
-  var userData = _.find(users, _.matchesProperty('username', username));
+  async.waterfall([
+    function(callback){
 
-  console.log(userData);
+      User
+      .query(function(qb) {
+        qb.where('username', username).limit(1);
+      })
+      .fetch({ require: true })
+      .then(function(model){
+        callback(null, model);
+      })
+      .catch(User.NotFoundError, function(){
+        callback('username or password is invalid');
+      })
+      .catch(function(err){
+        callback(err);
+      });
 
-  if( !userData || userData.password != password )
-    return res.status(401).json({ error: 'Username or Password is invalid' });
+    },
+    function(model, callback){
 
-  var payLoad = _.omit(userData, ['password','phone']);
+      bcrypt.compare(password, model.get('password'), function(err, res) {
 
-  var jwtOpt = config.jwtOptions();
+        if(err)
+          return callback(err);
 
-  console.log(payLoad);
-  console.log(jwtOpt);
-  console.log(config.jwtSecret);
+        if(!res)
+          return callback('username or password is invalid');
 
-  jwt.sign(payLoad, config.jwtSecret, jwtOpt, function(err, token) {
+        callback(null, model);
+      });
 
-    if(err){
+    },
+    function (model, callback) {
+
+      var payLoad = {
+        name: model.get('name'),
+        username: model.get('username'),
+        email: model.get('email'),
+        role: model.get('role')
+      };
+
+      jwt.sign(payLoad, config.jwtSecret, config.jwtOptions(), function(err, token) {
+
+        if(err)
+          return callback(err);
+
+        payLoad.access_token = token;
+
+        callback(null, payLoad);
+      });
+    }
+  ], function(err, payLoad){
+
+    if( err ){
+
       console.log(err);
+
+      if( _.isString(err) )
+        return res.status(401).json({ error: err });
+
       return res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    console.log('token');
-    console.log(token);
-
-    payLoad.access_token = token;
-
     res.status(200).json(payLoad);
   });
-
 
 };

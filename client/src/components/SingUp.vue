@@ -3,6 +3,7 @@
 
   <div class="login-wrapper">
 
+
     <b-alert variant="danger" class="text-center" dismissible :show="!!signupError" @dismissed="signupError=''" >
       {{ signupError }}
     </b-alert>
@@ -77,6 +78,7 @@
   </div>
 
 </template>
+
 
 <script>
 
@@ -156,6 +158,8 @@
             this.$store.commit(LOGIN, payLoad);
             this.$http.defaults.headers.common.Authorization = `Bearer ${payLoad.access_token}`;
 
+            this.$router.replace({ path: '/' });
+
           })
           .catch(errs => {
             this.formDone();
@@ -181,8 +185,12 @@
     mounted() {
 
       //https://maketips.net/tip/61/recaptcha-with-vuejs-example
-      if (window.grecaptcha )
+      if (window.grecaptcha ){
+        console.log('yay!');
         grecaptcha.render( this.$el.querySelector('.captchaWrapper'), { sitekey : this.recapt_key });
+      }
+      else
+        console.log('eh!');
 
     },
 

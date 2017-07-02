@@ -14,11 +14,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'font-awesome/css/font-awesome.css';
 import 'nprogress/nprogress.css';
+import './assets/style.css';
+import './assets/fonts/fonts.css';
+
 
 sync(store, router);
 
 Vue.prototype.$http = axios;
-Vue.prototype.$http.defaults.headers.common['Authorization'] = store.getters.getToken;
+Vue.prototype.$http.defaults.headers.common.Authorization = store.getters.getToken;
 Vue.config.productionTip = false;
 
 
