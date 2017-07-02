@@ -32,8 +32,6 @@
 
 <script>
 
-  import { mapState } from 'vuex';
-
   export default {
 
 
@@ -57,6 +55,7 @@
       submit() {
 
         var vm = this;
+        vm.errors = '';
 
         let credentials = {
           username: vm.credentials.username,
@@ -66,9 +65,9 @@
         console.log(credentials);
 
         vm.$store.dispatch('login', credentials)
-        .catch(err => {
-          vm.errors = err;
-        });
+          .catch(err => {
+            vm.errors = err;
+          });
 
       }
     }

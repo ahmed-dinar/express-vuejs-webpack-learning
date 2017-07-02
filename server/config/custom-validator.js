@@ -20,20 +20,22 @@ function userExists(userData){
   return new Promise(function(resolve, reject){
 
     User
-    .query(function(qb) {
-      qb.where('username', userData).orWhere('email', userData).limit(1);
-    })
-    .fetch({ require: true })
-    .then(function(model){
-      reject();
-    })
-    .catch(User.NotFoundError, function(){
-      resolve();
-    })
-    .catch(function(err){
-      console.log(err);
-      throw err;
-    });
+      .query(function(qb) {
+        qb.where('username', userData)
+          .orWhere('email', userData)
+          .limit(1);
+      })
+      .fetch({ require: true })
+      .then(function(model){
+        reject();
+      })
+      .catch(User.NotFoundError, function(){
+        resolve();
+      })
+      .catch(function(err){
+        console.log(err);
+        throw err;
+      });
   });
 }
 

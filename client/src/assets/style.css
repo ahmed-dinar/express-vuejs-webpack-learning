@@ -76,20 +76,39 @@ https://stackoverflow.com/questions/2610497/change-an-html5-inputs-placeholder-c
 }
 
 
-  h1, h2 {
-    font-weight: normal;
-  }
+h1, h2 {
+  font-weight: normal;
+}
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
+ul {
+  list-style-type: none;
+  padding: 0;
+}
 
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
 
-  a {
-    color: #42b983;
-  }
+a {
+  color: #42b983;
+}
+
+.alert-danger, .alert-success, .alert-warning, .alert-info{
+  border-color: transparent;
+}
+
+.alert-success{
+  background-color: #c1e2b6;
+}
+
+.alert-danger{
+  background-color: #e9c8c8;
+}
+.alert-warning{
+  background-color: #f5e8a3;
+}
+.alert-info{
+  background-color: #c0e1f2;
+}
+

@@ -82,7 +82,6 @@
 
 <script>
 
-  import { mapState } from 'vuex';
   import { Validator } from 'vee-validate';
   import { LOGIN } from '../store/mutation-types';
   import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
@@ -143,34 +142,35 @@
           };
 
           this.$http.post('/api/users/signup', credentials)
-          .then(response => {
+            .then(response => {
 
+              this.formDone();
+
+              if( response.data.status !== 'success' ){
+                this.signupError = response.data.error;
+                return;
+              }
+
+              let payLoad = response.data.payLoad;
+              console.log(payLoad);
+
+              this.$store.commit(LOGIN, payLoad);
+              this.$http.defaults.headers.common.Authorization = `Bearer ${payLoad.access_token}`;
+
+              this.$router.replace({ path: '/' });
+
+            })
+            .catch(errs => {
+              this.formDone();
+              console.log(errs);
+              this.signupError = `${errs.response.status} ${errs.response.statusText}`;
+            });
+
+        })
+          .catch(err => {
             this.formDone();
-
-            if( response.data.status !== 'success' ){
-              this.signupError = response.data.error;
-              return;
-            }
-
-            let payLoad = response.data.payLoad;
-            console.log(payLoad);
-
-            this.$store.commit(LOGIN, payLoad);
-            this.$http.defaults.headers.common.Authorization = `Bearer ${payLoad.access_token}`;
-
-            this.$router.replace({ path: '/' });
-
-          })
-          .catch(errs => {
-            this.formDone();
-            console.log(errs);
-            this.signupError = `${errs.response.status} ${errs.response.statusText}`;
+            console.log(err);
           });
-
-        }).catch(err => {
-          this.formDone();
-          console.log(err);
-        });
       },
 
       formDone(){
@@ -178,7 +178,7 @@
         NProgress.done();
         NProgress.remove();
         if (window.grecaptcha )
-            grecaptcha.reset();
+          grecaptcha.reset();
       }
     },
 
@@ -201,10 +201,10 @@
         validate: value => {
           if( !value ) return false;
 
-          return this.$http.post(`/api/users/available`, { cred: value })
-          .then(response => {
-           return Promise.resolve(response.data);
-         });
+          return this.$http.post('/api/users/available', { cred: value })
+            .then(response => {
+              return Promise.resolve(response.data);
+            });
         }
       });
     }

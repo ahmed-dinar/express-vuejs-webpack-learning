@@ -1,10 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var _ = require('lodash');
-var has = require('has');
 var authJwt = require('../../middlewares/authJwt');
-var config = require('../../config');
 var fakeData = require('../../config/fake');
 
 router.use('/users', require('./users'));

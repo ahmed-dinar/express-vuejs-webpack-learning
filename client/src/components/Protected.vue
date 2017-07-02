@@ -11,7 +11,6 @@
 
 <script>
 
-  import axios from 'axios';
   import { mapGetters } from 'vuex';
 
   export default {
@@ -40,7 +39,7 @@
       ...mapGetters([
         'isLoggedIn',
         'getToken'
-        ])
+      ])
     },
 
     methods: {

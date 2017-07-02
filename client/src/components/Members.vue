@@ -33,7 +33,6 @@
 
 <script>
 
-  import axios from 'axios';
   import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
   export default {
@@ -78,17 +77,17 @@
         this.loading = true;
 
         this.$http
-        .get('/api/members')
-        .then(response => {
-          console.log(response.data);
-          this.loading = false;
-          this.members = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-          this.loading = false;
-          this.errors = e;
-        });
+          .get('/api/members')
+          .then(response => {
+            console.log(response.data);
+            this.loading = false;
+            this.members = response.data;
+          })
+          .catch(e => {
+            console.log(e);
+            this.loading = false;
+            this.errors = e;
+          });
       }
     }
   };

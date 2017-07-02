@@ -52,7 +52,6 @@
 
 <script>
 
-  import NProgress from 'nprogress';
   import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
   export default {
@@ -107,18 +106,18 @@
 
 
           vm.$http
-          .get('/api/countries')
-          .then(response => {
-            vm.loading = false;
-            vm.countries = response.data;
-          })
-          .catch(e => {
-            vm.loading = false;
-            vm.errors = e;
-          });
+            .get('/api/countries')
+            .then(response => {
+              vm.loading = false;
+              vm.countries = response.data;
+            })
+            .catch(e => {
+              vm.loading = false;
+              vm.errors = e;
+            });
 
 
-        }, 3000)
+        }, 3000);
 
 
       },
@@ -130,8 +129,8 @@
         console.log(JSON.stringify(item));
 
        // alert(JSON.stringify(item));
-     }
-   }
+      }
+    }
 
- };
+};
 </script>

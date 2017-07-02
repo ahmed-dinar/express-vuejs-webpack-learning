@@ -70,17 +70,17 @@
    computed: {
 
      ...mapState({
-      isLoggedIn: state => state.auth.authenticated,
-      user: state => state.auth.data
-    })
+       isLoggedIn: state => state.auth.authenticated,
+       user: state => state.auth.data
+     })
 
    },
 
    methods:{
 
-    ...mapActions([
-     'logOut'
+     ...mapActions([
+       'logOut'
      ])
-  }
+   }
 };
 </script>

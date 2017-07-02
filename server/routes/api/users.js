@@ -8,7 +8,6 @@ var reCAPTCHA = require('recaptcha2');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 
-var fakeData = require('../../config/fake');
 var config = require('../../config');
 var Schema = require('../../config/validation-schema');
 var User = require('../../models/user');
@@ -28,13 +27,13 @@ router.post('/signup',function(req, res, next) {
       });
 
       recaptcha.validateRequest(req)
-      .then(function(){
-        callback();
-      })
-      .catch(function(errorCodes){
-        console.log(recaptcha.translateErrors(errorCodes));
-        callback('Captcha does not match');
-      });
+        .then(function(){
+          callback();
+        })
+        .catch(function(errorCodes){
+          console.log(recaptcha.translateErrors(errorCodes));
+          callback('Captcha does not match');
+        });
     },
     function(callback){
 
@@ -47,12 +46,12 @@ router.post('/signup',function(req, res, next) {
 
         if (!result.isEmpty()){
          // console.log(result.array());
-         var e = result.array()[0];
-         return callback(e.param + ' ' + e.msg);
-       }
+          var e = result.array()[0];
+          return callback(e.param + ' ' + e.msg);
+        }
 
-       return callback();
-     });
+        return callback();
+      });
     },
     function(callback) {
       bcrypt.genSalt(10, callback);
@@ -71,18 +70,18 @@ router.post('/signup',function(req, res, next) {
       };
 
       User
-      .forge(null, { hasTimestamps: false })
-      .save(data, { require: true })
-      .then(function(model){
-        console.log(model.attributes);
-        callback(null,model.attributes);
-      })
-      .catch(User.NoRowsUpdatedError, function(){
-        callback(new Error('database error'));
-      })
-      .catch(function(err){
-        callback(err);
-      });
+        .forge(null, { hasTimestamps: false })
+        .save(data, { require: true })
+        .then(function(model){
+          console.log(model.attributes);
+          callback(null,model.attributes);
+        })
+        .catch(User.NoRowsUpdatedError, function(){
+          callback(new Error('database error'));
+        })
+        .catch(function(err){
+          callback(err);
+        });
 
     },
     function(userData, callback){
@@ -102,20 +101,20 @@ router.post('/signup',function(req, res, next) {
     }
   ], function (err, payLoad) {
 
-      if(err){
+    if(err){
 
-        console.log(err);
+      console.log(err);
 
-        if( _.isString(err) )
-          return res.status(200).json({ status: 'failed', error: err });
+      if( _.isString(err) )
+        return res.status(200).json({ status: 'failed', error: err });
 
-        return res.status(500).json('Internal server error');
-      }
+      return res.status(500).json('Internal server error');
+    }
 
-      console.log(payLoad);
+    console.log(payLoad);
 
-      res.status(200).json({ status: 'success', payLoad: payLoad });
-    });
+    res.status(200).json({ status: 'success', payLoad: payLoad });
+  });
 
 });
 
@@ -133,20 +132,22 @@ router.post('/available',function(req, res, next) {
   var cred = req.body.cred;
 
   User
-  .query(function(qb) {
-    qb.where('username', cred).orWhere('email', cred).limit(1);
-  })
-  .fetch({ require: true })
-  .then(function(model){
-    return res.status(200).json({ valid: false });
-  })
-  .catch(User.NotFoundError, function(){
-    return res.status(200).json({ valid: true });
-  })
-  .catch(function(err){
-    console.log(err);
-    return res.sendStatus(500);
-  });
+    .query(function(qb) {
+      qb.where('username', cred)
+        .orWhere('email', cred)
+        .limit(1);
+    })
+    .fetch({ require: true })
+    .then(function(model){
+      return res.status(200).json({ valid: false });
+    })
+    .catch(User.NotFoundError, function(){
+      return res.status(200).json({ valid: true });
+    })
+    .catch(function(err){
+      console.log(err);
+      return res.sendStatus(500);
+    });
 
 });
 

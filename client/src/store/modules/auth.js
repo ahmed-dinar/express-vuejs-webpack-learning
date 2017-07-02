@@ -6,14 +6,14 @@ import has from 'has';
 import Vue from 'vue';
 
 const state = {
-	authenticated: false,
-	data: {}
+  authenticated: false,
+  data: {}
 };
 
 const getters ={
-	isLoggedIn: state => {
-		return state.authenticated;
-	},
+  isLoggedIn: state => {
+    return state.authenticated;
+  },
   getToken: state => {
     return has(state.data,'access_token') ? 'Bearer ' + state.data.access_token : null;
   }
@@ -22,52 +22,52 @@ const getters ={
 
 const mutations = {
 
-	[muts.LOGIN] (state, data) {
-		state.authenticated = true;
-		state.data = data;
-		state.errors = '';
-	},
+  [muts.LOGIN] (state, data) {
+    state.authenticated = true;
+    state.data = data;
+    state.errors = '';
+  },
 
-	[muts.LOG_OUT] (state) {
-		state.authenticated = false;
-		state.data = {};
-	},
+  [muts.LOG_OUT] (state) {
+    state.authenticated = false;
+    state.data = {};
+  },
 
-	[muts.LOGIN_FAILURE] (state) {
-		state.authenticated = false;
-		state.data = {};
-	}
+  [muts.LOGIN_FAILURE] (state) {
+    state.authenticated = false;
+    state.data = {};
+  }
 };
 
 
 const actions = {
 
-	login({ commit }, creds) {
+  login({ commit }, creds) {
 
     return new Promise((resolve, reject) => {
 
       axios.post('/api/login', creds)
-      .then( res => {
+        .then( res => {
 
-        console.log(res.data);
-        console.log(res.data.access_token);
+          console.log(res.data);
+          console.log(res.data.access_token);
 
-        commit(muts.LOGIN, res.data);
-        Vue.prototype.$http.defaults.headers.common.Authorization = `Bearer ${res.data.access_token}`;
-        router.replace('/protected');
-        resolve();
-      })
-      .catch( err => {
+          commit(muts.LOGIN, res.data);
+          Vue.prototype.$http.defaults.headers.common.Authorization = `Bearer ${res.data.access_token}`;
+          router.replace('/protected');
+          resolve();
+        })
+        .catch( err => {
 
-        console.log(err);
-        commit(muts.LOGIN_FAILURE);
+          console.log(err);
+          commit(muts.LOGIN_FAILURE);
 
-        let retErr = has(err.response.data,'error')
+          let retErr = has(err.response.data,'error')
         ? err.response.data.error
         : `${err.response.status} ${err.response.statusText}`;
 
-        reject(retErr);
-      });
+          reject(retErr);
+        });
     });
 
   },
@@ -80,8 +80,8 @@ const actions = {
 };
 
 export default {
-	state,
-	getters,
-	actions,
-	mutations
+  state,
+  getters,
+  actions,
+  mutations
 };

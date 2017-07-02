@@ -75,8 +75,8 @@ router.beforeEach((to, from, next) => {
 
 
 router.afterEach((to,from) => {
-    NProgress.done();
-    NProgress.remove();
+  NProgress.done();
+  NProgress.remove();
 });
 
 

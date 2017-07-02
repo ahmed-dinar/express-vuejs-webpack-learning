@@ -3,24 +3,26 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cors = require('cors');
-//var csrf = require('csurf');
 var bodyParser = require('body-parser');
+var compression = require('compression');
 var serveStatic = require('serve-static');
 var expressValidator = require('express-validator');
+var methodOverride = require('method-override');
 var helmet = require('helmet');
 var customValidators = require('./config/custom-validator');
 
 var app = express();
 
-app.use(cors());
+app.use(compression());
 app.use(helmet());
-//app.use(csrf());
+app.use(cors());
 app.use(helmet.hidePoweredBy());
 
 app.use(favicon(path.join(__dirname, 'public/static', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride());
 app.use(expressValidator({ customValidators: customValidators }));
 app.use(serveStatic(path.join(__dirname, 'public/static')));
 

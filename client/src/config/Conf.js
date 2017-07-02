@@ -1,11 +1,11 @@
 
 
 export default {
-	install(Vue, config){
+  install(Vue, config){
 	  Vue.mixin({
 	    created: function () {
 	      this.$config = config;
 	    }
 	  });
-	}
+  }
 };

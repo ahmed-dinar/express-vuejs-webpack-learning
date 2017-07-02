@@ -23,19 +23,19 @@ module.exports = function(req, res, next) {
     function(callback){
 
       User
-      .query(function(qb) {
-        qb.where('username', username).limit(1);
-      })
-      .fetch({ require: true })
-      .then(function(model){
-        callback(null, model);
-      })
-      .catch(User.NotFoundError, function(){
-        callback('username or password is invalid');
-      })
-      .catch(function(err){
-        callback(err);
-      });
+        .query(function(qb) {
+          qb.where('username', username).limit(1);
+        })
+        .fetch({ require: true })
+        .then(function(model){
+          callback(null, model);
+        })
+        .catch(User.NotFoundError, function(){
+          callback('username or password is invalid');
+        })
+        .catch(function(err){
+          callback(err);
+        });
 
     },
     function(model, callback){
